@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = (
     'django_filters',
    
     'drf_yasg',
+    'djoser',
 )
 
 INSTALLED_APPS = DJANGO_APP + LOCAL_APP + THIRD_PARTY_APPS
@@ -121,10 +122,35 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#configuracion de djoser
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,  # Para que el formulario de registro pida repetir la contraseña
+    'SEND_ACTIVATION_EMAIL': False,  # Para activar la cuenta vía email, en caso de necesitarlo
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'SERIALIZERS': {
+        'user_create': 'applications.users.serializers.CustomUserCreateSerializer',
+    },
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'https://2025compraya@gmail.com/password/reset/confirm/{uid}/{token}',
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '2025compraya@gmail.com'
+EMAIL_HOST_PASSWORD = '2025_Compraya!'
+
+
+#configuracion de django rest framework 
 REST_FRAMEWORK = {
-    #'DEFAULT_AUTHENTICATION_CLASSES': (
-    #    'rest_framework_simplejwt.authentication.JWTAuthentication',
-    #),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     #'DEFAULT_PERMISSION_CLASSES': (
     #    'rest_framework.permissions.IsAuthenticated',
     #)
