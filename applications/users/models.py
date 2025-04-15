@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
         )
         user.set_password(password)
         user.save(using=self._db)
-        print("clave encriptada: ",user.password)
+       
         return user
 
     """ def create_superuser(self, email, name, last_name, username, password=None,**extra_fields):

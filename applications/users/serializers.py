@@ -10,7 +10,21 @@ class UserSerializer(serializers.ModelSerializer):
     repeat_password = serializers.CharField(write_only=True, min_length=8)
     class Meta:
         model = User
-        fields = ['id','name','last_name','username','email','password','repeat_password','created','modified']
+        fields = [
+            'id',
+            'name',
+            'last_name',
+            'username',
+            'email',
+            'password',
+            'repeat_password',
+            'is_active',
+            'is_staff',
+            'is_suscription',
+            'created',
+            'modified'
+            ]
+        ref_name = 'CustomUserSerializer'
     
     def validate(self, attrs):
         if attrs['password'] != attrs['repeat_password']:
