@@ -7,7 +7,7 @@ from rest_framework.response import Response
 #
 from rest_framework import status
 #
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 #
 from .models import User
@@ -19,8 +19,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication,SessionAuthentication, BasicAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
+
+    def list(selt, request,  *args, **kwargs):
+        queryset = User.objects.all()
+
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
         # Obtiene el serializer con los datos de la request
@@ -58,3 +64,6 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         # Retorna la respuesta con los datos serializados y un status 200 OK
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def perform_destroy(self, instance):
+        return super().perform_destroy(instance)
