@@ -4,30 +4,24 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 #
-#from rest_framework.authentication import TokenAuthentication, BasicAuthentication, SessionAuthentication
-#from rest_framework_simplejwt.authentication  import JWTAuthentication 
-
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
-from .serializers import CountrySerializer
-from .models import Country
-
-
-from django.shortcuts import render
+#
+from .serializers import CitySerializer
+from .models import Cities
 
 # Create your views here.
-class CountryViewSet(viewsets.ModelViewSet):
-    queryset = Country.objects.all()
-    serializer_class = CountrySerializer
+class CityViewSet(viewsets.ModelViewSet):
+    queryset = Cities.objects.all()
+    serializer_class = CitySerializer
     #
     authentication_classes = (JWTAuthentication,)
     permission_classes = [IsAuthenticated,IsAdminUser]
 
     def list(selt, request,  *args, **kwargs):
-        queryset = Country.objects.all()
+        queryset = Cities.objects.all()
 
-        serializer = CountrySerializer(queryset, many=True)
+        serializer = CitySerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def create(self, request, *args, **kwargs):

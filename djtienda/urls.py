@@ -32,4 +32,6 @@ urlpatterns = [
     re_path('api/v1/', include('applications.users.urls')),
     re_path('api/v1/', include('applications.profiles.urls')),
     re_path('api/v1/', include('applications.country.urls')),
+    re_path('api/v1/', include('applications.department.urls')),
+    re_path('api/v1/', include('applications.city.urls')),
 ]

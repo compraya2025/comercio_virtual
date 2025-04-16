@@ -45,6 +45,8 @@ LOCAL_APP = (
     'applications.users',
     'applications.profiles',
     'applications.country',
+    'applications.department',
+    'applications.city',
 )
 
 THIRD_PARTY_APPS = ( 

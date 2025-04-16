@@ -7,7 +7,7 @@ from rest_framework.response import Response
 #
 from rest_framework import status
 #
-from rest_framework.authentication import TokenAuthentication, BasicAuthentication, SessionAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 #
 from .models import User
@@ -19,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    authentication_classes = (TokenAuthentication,SessionAuthentication, BasicAuthentication,)
+    authentication_classes = (JWTAuthentication,)
     permission_classes = [IsAuthenticated,IsAdminUser]
 
     def list(selt, request,  *args, **kwargs):
