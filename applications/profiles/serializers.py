@@ -14,6 +14,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             'phone_profile',
             'birth_date',
             'address',
+            'country',
+            'department',
+            'city',
             'created',
             'modified',
         )
