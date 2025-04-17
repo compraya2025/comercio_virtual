@@ -23,7 +23,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     #filterset_class = ProfileFilter
 
-      #
+    #
     authentication_classes = (JWTAuthentication,)
     permission_classes = [IsAuthenticated,IsAdminUser]
 
@@ -66,6 +66,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
 class ProfilesViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.select_related('country','department','city').all()
     serializer_class = ProfilesSerializer
+
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
 
     def list(self, request, *args, **kwargs):
         perfiles_data = self.get_serializer(self.get_queryset(), many=True).data
