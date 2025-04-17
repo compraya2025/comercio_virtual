@@ -47,6 +47,7 @@ LOCAL_APP = (
     'applications.country',
     'applications.department',
     'applications.city',
+    'applications.custom',
 )
 
 THIRD_PARTY_APPS = ( 

@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 #
-
+from django.db.models import Exists, OuterRef
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
@@ -14,7 +14,7 @@ from applications.profiles.models import Profile
 from applications.country.models    import Country
 from applications.department.models import Departments
 from applications.city.models       import Cities
-
+from applications.custom.models import Custom
 #from applications.profiles.filters import ProfileFilter
 
 # Create your views here.
@@ -65,6 +65,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 class ProfilesViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.select_related('country','department','city').all()
+    
+
     serializer_class = ProfilesSerializer
 
     authentication_classes = (JWTAuthentication,)
@@ -84,6 +86,7 @@ class ProfilesViewSet(viewsets.ModelViewSet):
 
         return Response(perfiles_data, status=status.HTTP_200_OK)
     
+
     def retrieve(self, request, *args, **kwargs):
         perfil = self.get_serializer(self.get_object()).data
 

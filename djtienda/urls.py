@@ -34,4 +34,5 @@ urlpatterns = [
     re_path('api/v1/', include('applications.country.urls')),
     re_path('api/v1/', include('applications.department.urls')),
     re_path('api/v1/', include('applications.city.urls')),
+    re_path('api/v1/', include('applications.custom.urls')),
 ]
