@@ -48,6 +48,7 @@ LOCAL_APP = (
     'applications.department',
     'applications.city',
     'applications.custom',
+    'applications.store',
 )
 
 THIRD_PARTY_APPS = ( 
@@ -152,9 +153,9 @@ EMAIL_HOST_PASSWORD = '2025_Compraya!'
 
 #configuracion de django rest framework 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    #'DEFAULT_AUTHENTICATION_CLASSES': (
+    #    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    #),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),

@@ -26,26 +26,29 @@ class ProfileSerializer(serializers.ModelSerializer):
             'modified',
         )
     
-class CountrySerializer(serializers.ModelSerializer):
+class ProfileCountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ('id', 'name') 
+        fields = ('id', 'name')
+        ref_name = 'ProfileCountry'  
 
-class DepartmentSerializer(serializers.ModelSerializer):
+class ProfileDepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Departments
-        fields = ('id', 'name')   
+        fields = ('id', 'name') 
+        ref_name = 'ProfileDepartment'  
 
-class CitySerializer(serializers.ModelSerializer):
+class ProfileCitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Cities
         fields = ('id', 'name')
+        ref_name = 'ProfileCitySerializer'
 
 class ProfilesSerializer(serializers.ModelSerializer):
      #para  lectura
-     country    = CountrySerializer(read_only=True)
-     department = DepartmentSerializer(read_only=True)
-     city       = CitySerializer(read_only=True)
+     country    = ProfileCountrySerializer(read_only=True)
+     department = ProfileDepartmentSerializer(read_only=True)
+     city       = ProfileCitySerializer(read_only=True)
 
      # claves foráneas para escritura
      country_id    = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(),    source='country',    write_only=True)
@@ -74,3 +77,4 @@ class ProfilesSerializer(serializers.ModelSerializer):
             'created',
             'modified',
         )
+        ref_name = 'ProfilesWithNestedPlaces' 
