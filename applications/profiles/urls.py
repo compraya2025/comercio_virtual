@@ -9,6 +9,7 @@ from . import views
 router = DefaultRouter()
 
 router.register(r'profiles', views.ProfileViewSet, basename="profiles")
+router.register(r'perfil', views.ProfilesViewSet, basename="list-perfil")
 
 urlpatterns = [
     path('', include(router.urls)),
