@@ -3,8 +3,9 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 
-from .serializers import CustomerSerializer
+from .serializers import CustomerSerializer,ProfileSerializer
 from .models import Custom
+from applications.profiles.models import Profile
 
 
 # Create your views here.
@@ -27,9 +28,21 @@ class CustomersViewSet(viewsets.ModelViewSet):
         return queryset
     
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # 1) Seriealizar Customers
+        customers_qs   = self.get_queryset()
+        customers_data = CustomerSerializer(customers_qs, many=True).data
+
+        # 2) Serializar Profiles (por ejemplo, todos o sólo los que estén suscritos)
+        profiles_qs    = Profile.objects.filter(user__is_suscription=True)
+        profiles_data  = ProfileSerializer(profiles_qs, many=True).data
+
+        # 3) Armar y devolver el JSON combinado
+        return Response({
+            "customers": customers_data,
+            "profiles":  profiles_data
+        }, status=status.HTTP_200_OK)
+       
+
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
