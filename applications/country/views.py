@@ -3,15 +3,14 @@ from rest_framework import viewsets
 #
 from rest_framework import status
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 #
-#from rest_framework.authentication import TokenAuthentication, BasicAuthentication, SessionAuthentication
-#from rest_framework_simplejwt.authentication  import JWTAuthentication 
-
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from .serializers import CountrySerializer
 from .models import Country
+from applications.country.filters import CountryFilter
 
 
 from django.shortcuts import render
@@ -19,7 +18,7 @@ from django.shortcuts import render
 # Create your views here.
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.all()
-    serializer_class = CountrySerializer
+    serializer_class = CountrySerializer   
     #
     authentication_classes = (JWTAuthentication,)
     permission_classes = [IsAuthenticated,IsAdminUser]
@@ -63,7 +62,8 @@ class CountryViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response({'Registro eliminado existoso!'},status=status.HTTP_204_NO_CONTENT)
-    
+
+#Para reporte de paises por fecha  
 class CountryReportViewSet(viewsets.ReadOnlyModelViewSet):
     """
     GET /api/v1/countries/?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
@@ -82,4 +82,16 @@ class CountryReportViewSet(viewsets.ReadOnlyModelViewSet):
         if end:
             qs = qs.filter(created__date__lte=end)
         return qs
+
+#filtrar country
+class CountryList(viewsets.ModelViewSet):
+
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    filterset_class = CountryFilter 
+
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
+    
+
 

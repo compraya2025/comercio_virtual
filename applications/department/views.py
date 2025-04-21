@@ -7,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+#
 from .serializers import DepartmentSerializer
 from .models import Departments
-
+from applications.department.filters import DepartmentFilter
 # Create your views here.
 
 class DepartmentViewSet(viewsets.ModelViewSet):
@@ -59,3 +60,31 @@ class DepartmentViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response({'Registro eliminado existoso!'},status=status.HTTP_204_NO_CONTENT)
+
+ #Para reporte de departamento por fecha  
+class DepartmentReportViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    GET /api/v1/departments/?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
+    Devuelve los departamento creados en ese intervalo.
+    """
+    serializer_class = DepartmentSerializer
+
+    def get_queryset(self):
+        qs = Departments.objects.all().order_by('created')
+        params = self.request.query_params
+        start = params.get('start_date')
+        end   = params.get('end_date')
+
+        if start:
+            qs = qs.filter(created__date__gte=start)
+        if end:
+            qs = qs.filter(created__date__lte=end)
+        return qs
+
+class DepartmentListViewSet(viewsets.ModelViewSet):
+     queryset = Departments.objects.all()
+     serializer_class = DepartmentSerializer
+     filterset_class = DepartmentFilter 
+     #
+     authentication_classes = (JWTAuthentication,)
+     permission_classes = [IsAuthenticated,IsAdminUser]
