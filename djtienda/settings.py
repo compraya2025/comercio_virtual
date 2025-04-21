@@ -50,6 +50,7 @@ LOCAL_APP = (
     'applications.custom',
     'applications.store',
     'applications.audit',
+    'applications.tax',
 )
 
 THIRD_PARTY_APPS = ( 
