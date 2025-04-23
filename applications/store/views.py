@@ -5,14 +5,21 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
-from .serializers import StoreSerializer
+#
+from rest_framework_simplejwt.authentication import JWTAuthentication 
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+from .serializers import StoreSerializer
 from .models import Store
+from applications.store.filters import StoreFilters
 
 # Create your views here.
 class StoreViewSet(viewsets.ModelViewSet):
     queryset = Store.objects.all()
     serializer_class = StoreSerializer
+    #
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
 
     def list(selt, request,  *args, **kwargs):
         queryset = Store.objects.all()
@@ -49,3 +56,30 @@ class StoreViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response({'Registro eliminado existoso!'},status=status.HTTP_204_NO_CONTENT)
+    
+#filtro
+class StoreFilterViewSet(viewsets.ModelViewSet):
+    queryset = Store.objects.all()
+    serializer_class = StoreSerializer
+    filterset_class = StoreFilters
+    #
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
+
+#reportes
+class StoreReportViewSet(viewsets.ModelViewSet):
+     #GET /api/v1/store-report/?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
+
+    serializer_class = StoreSerializer
+
+    def get_queryset(self):
+        qs =  Store.objects.all().order_by('created')
+        params = self.request.query_params
+        start = params.get('start_date')
+        end   = params.get('end_date')
+
+        if start:
+            qs = qs.filter(created__date__gte=start)
+        if end:
+            qs = qs.filter(created__date__lte=end)
+        return qs

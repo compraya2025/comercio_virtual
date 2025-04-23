@@ -15,7 +15,8 @@ from applications.country.models    import Country
 from applications.department.models import Departments
 from applications.city.models       import Cities
 from applications.custom.models import Custom
-#from applications.profiles.filters import ProfileFilter
+from applications.profiles.filters import ProfileFilters
+
 
 # Create your views here.
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -63,6 +64,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response({'Registro eliminado existoso!'},status=status.HTTP_204_NO_CONTENT)
 
+#vista personalizada
 class ProfilesViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.select_related('country','department','city').all()
     
@@ -122,3 +124,34 @@ class ProfilesViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response({'Registro eliminado existoso!'},status=status.HTTP_204_NO_CONTENT)
+    
+#filtros
+class ProfilFiltersViewSet(viewsets.ModelViewSet):
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    filterset_class = ProfileFilters
+
+    #
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
+
+#reportes
+class ProfileReportViewSet(viewsets.ModelViewSet):
+       #GET /api/v1/profiles-report/?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
+
+    serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        qs =  Profile.objects.all().order_by('created')
+        params = self.request.query_params
+        start = params.get('start_date')
+        end   = params.get('end_date')
+
+        if start:
+            qs = qs.filter(created__date__gte=start)
+        if end:
+            qs = qs.filter(created__date__lte=end)
+        return qs
+    
+

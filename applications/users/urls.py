@@ -8,6 +8,8 @@ from . import views
 router = DefaultRouter()
 
 router.register(r'users', views.UserViewSet, basename="users")
+router.register(r'users-report', views.UserReportViewSet, basename="users-report")
+router.register(r'users-filter', views.UserFilterViewSet, basename="users-filter")
 
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

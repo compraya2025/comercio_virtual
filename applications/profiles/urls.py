@@ -10,6 +10,8 @@ router = DefaultRouter()
 
 router.register(r'profiles', views.ProfileViewSet, basename="profiles")
 router.register(r'perfil', views.ProfilesViewSet, basename="list-perfil")
+router.register(r'perfiles-filter', views.ProfilFiltersViewSet, basename="perfiles-filter")
+router.register(r'perfiles-report', views.ProfileReportViewSet, basename="perfiles-report")
 
 urlpatterns = [
     path('', include(router.urls)),

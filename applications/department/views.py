@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import DepartmentSerializer
 from .models import Departments
 from applications.department.filters import DepartmentFilter
-# Create your views here.
 
+#generico
 class DepartmentViewSet(viewsets.ModelViewSet):
     queryset = Departments.objects.all()
     serializer_class = DepartmentSerializer
@@ -81,6 +81,7 @@ class DepartmentReportViewSet(viewsets.ReadOnlyModelViewSet):
             qs = qs.filter(created__date__lte=end)
         return qs
 
+#Para de filtrados
 class DepartmentListViewSet(viewsets.ModelViewSet):
      queryset = Departments.objects.all()
      serializer_class = DepartmentSerializer

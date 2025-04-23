@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 #
 from .models import User
 from .serializers import UserSerializer
+from .filters import UserFilters
 # Create your views here.
 
 
@@ -67,3 +68,33 @@ class UserViewSet(viewsets.ModelViewSet):
     
     def perform_destroy(self, instance):
         return super().perform_destroy(instance)
+
+#reportes
+class UserReportViewSet(viewsets.ModelViewSet):
+#GET /api/v1/users-report/?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
+   
+    serializer_class = UserSerializer
+
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
+
+    def get_queryset(self):
+        qs = User.objects.all().order_by('created')
+        params = self.request.query_params
+        start = params.get('start_date')
+        end   = params.get('end_date')
+
+        if start:
+            qs = qs.filter(created__date__gte=start)
+        if end:
+            qs = qs.filter(created__date__lte=end)
+        return qs 
+
+#filtro
+class UserFilterViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filterset_class = UserFilters
+
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated,IsAdminUser]
