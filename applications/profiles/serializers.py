@@ -30,32 +30,34 @@ class ProfileCountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
         fields = ('id', 'name')
-        ref_name = 'ProfileCountry'  
+        ref_name = 'ProfileCountrySerializer'  # ← corregido
+
 
 class ProfileDepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Departments
-        fields = ('id', 'name') 
-        ref_name = 'ProfileDepartment'  
+        fields = ('id', 'name')
+        ref_name = 'ProfileDepartmentSerializer'
+
 
 class ProfileCitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Cities
         fields = ('id', 'name')
-        ref_name = 'ProfileCitySerializer'
+        ref_name = 'CustomCitySerializer'
 
 class ProfilesSerializer(serializers.ModelSerializer):
-     #para  lectura
-     country    = ProfileCountrySerializer(read_only=True)
-     department = ProfileDepartmentSerializer(read_only=True)
-     city       = ProfileCitySerializer(read_only=True)
+    # para lectura
+    country = ProfileCountrySerializer(read_only=True)
+    department = ProfileDepartmentSerializer(read_only=True)
+    city = ProfileCitySerializer(read_only=True)
 
-     # claves foráneas para escritura
-     country_id    = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(),    source='country',    write_only=True)
-     department_id = serializers.PrimaryKeyRelatedField(queryset=Departments.objects.all(), source='department', write_only=True)
-     city_id       = serializers.PrimaryKeyRelatedField(queryset=Cities.objects.all(),source='city', write_only=True)
+    # claves foráneas para escritura
+    country_id = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all(), source='country', write_only=True)
+    department_id = serializers.PrimaryKeyRelatedField(queryset=Departments.objects.all(), source='department', write_only=True)
+    city_id = serializers.PrimaryKeyRelatedField(queryset=Cities.objects.all(), source='city', write_only=True)
 
-     class Meta:
+    class Meta:
         model = Profile
         fields = (
             'id',
@@ -77,4 +79,4 @@ class ProfilesSerializer(serializers.ModelSerializer):
             'created',
             'modified',
         )
-        ref_name = 'ProfilesWithNestedPlaces' 
+        ref_name = 'ProfilesWithNestedPlaces'

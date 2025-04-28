@@ -12,3 +12,4 @@ class CitySerializer(serializers.ModelSerializer):
             'created',
             'modified'
         )
+    ref_name = 'MainCitySerializer'
