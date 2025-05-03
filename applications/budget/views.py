@@ -31,8 +31,8 @@ class BudgetsViewSet(viewsets.ViewSet):
         # Crear presupuesto base
         budget = Budget.objects.create(date=timezone.now())
 
-        total = Decimal('000.00')
-        incomen = Decimal('000.00')
+        total = Decimal('00.00')
+        incomen = Decimal('00.00')
         detalles = []
 
         for item in serializer.validated_data['details']:
