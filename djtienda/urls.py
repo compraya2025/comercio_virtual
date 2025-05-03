@@ -39,4 +39,5 @@ urlpatterns = [
     re_path('api/v1/', include('applications.tax.urls')),
     re_path('api/v1/', include('applications.category.urls')),
     re_path('api/v1/', include('applications.product.urls')),
+    re_path('api/v1/', include('applications.budget.urls')),
 ]
