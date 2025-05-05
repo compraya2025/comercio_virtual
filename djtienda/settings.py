@@ -54,6 +54,7 @@ LOCAL_APP = (
     'applications.category',
     'applications.product',
     'applications.budget',
+    'applications.company',
 )
 
 THIRD_PARTY_APPS = ( 
